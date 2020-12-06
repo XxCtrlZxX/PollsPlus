@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+</head>
+<body>
+    {% if latest_posts %}
+    <h1>Post</h1>
+        {% for post in latest_posts %}
+        <ul>
+            <li>Title : {{ post.title_text }}</li>
+            <li>Date : {{ post.pub_date }}</li>
+            <li>Writer : {{ post.writer }}</li>
+            <li>Text : {{ post.contents_text }}</li>
+            <ul>
+                <li><a href="/pollsplus/posts/{{ post.id }}/comments">댓글보기</a></li>
+            </ul>
+        </ul>
+        {% endfor %}
+    {% else %}
+        <p>Posts are not exist</p>
+    {% endif %}
+</body>
+</html>

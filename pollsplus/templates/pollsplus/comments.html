@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Comments</title>
+</head>
+<body>
+    {% if post %}
+    <h2>{{ post.title_text }}</h2>
+    <ul>
+        {% for comment in post.comment_set.all %}
+            <li>{{ comment.writer }} -- {{ comment.contents_text }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>Comments are not exist</p>
+    {% endif %}
+</body>
+</html>

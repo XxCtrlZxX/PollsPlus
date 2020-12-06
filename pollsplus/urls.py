@@ -3,7 +3,8 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('posts/', views.posts, name='posts')
+    path('posts/', views.posts, name='posts'),
+    path('posts/<int:post_id>/comments/', views.comments, name='comments'),
 ]
 
 app_name = 'pollsplus'
