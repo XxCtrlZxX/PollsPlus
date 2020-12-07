@@ -26,10 +26,13 @@ def signup(request):
             return render(request, "accounts/signup.html", {"error": "input confirm pw "})
 
         if password1 == password2:
-            user = User.objects.create_user(username=userid, password=password1, first_name=username)
-            user.save()
-            auth.login(request, user)
-            return redirect("polls:accounts:index")
+            try:
+                user = User.objects.create_user(username=userid, password=password1, first_name=username)
+                user.save()
+                auth.login(request, user)
+                return redirect("polls:accounts:index")
+            except Exception:
+                return render(request, 'accounts/signup.html', {"error": "아이디가 중복되었습니다 "})
 
     return render(request, 'accounts/signup.html')
 
