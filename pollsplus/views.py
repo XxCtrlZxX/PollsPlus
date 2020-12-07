@@ -10,7 +10,7 @@ def index(request):
 
 # 게시글 보기
 def posts(request):
-    latest_post_list = Post.objects.all().order_by('-pub_date')[:5]
+    latest_post_list = Post.objects.all().order_by('-pub_date')[:10]
     context = {'latest_posts': latest_post_list}
     return render(request, 'pollsplus/posts.html', context)
 
@@ -28,14 +28,14 @@ def posting(request):
 
 # 작성된 게시글 업로드
 def upload(request):
-    # try:
-    #     title_text = request.Post['title']
-    #     writer = request.Post['writer']
-    #     contents = request.Post['contents']
-    # except KeyError:
-    #     return render(request, 'pollsplus/posting.html', {'error_message': 'KeyError: Upload is not successful'})
+    try:
+        title_text = request.POST['title']
+        writer = request.POST['writer']
+        contents = request.POST['contents']
+    except KeyError:
+        return render(request, 'pollsplus/posting.html',
+                      {'error_message': 'KeyError: Upload is not successful. Please try again.'})
 
-    post = Post.objects.create(title_text='asdf', writer='writer1', contents_text='abc')
-    # post.save()
-    post.save(force_insert=True)
-    return HttpResponseRedirect(reverse('pollsplus/posts', args=()))
+    post = Post(title_text=title_text, writer=writer, contents_text=contents)
+    post.save()
+    return HttpResponseRedirect(reverse('pollsplus:posts', args=()))
