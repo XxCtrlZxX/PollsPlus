@@ -6,15 +6,18 @@
 </head>
 <body>
     {% if latest_posts %}
-    <h1>Post</h1>
+    <h1>Posts</h1>
         {% for post in latest_posts %}
         <ul>
             <li>Title : {{ post.title_text }}</li>
             <li>Date : {{ post.pub_date }}</li>
             <li>Writer : {{ post.writer }}</li>
-            <li>Text : {{ post.contents_text }}</li>
+            <li>Text : {{ post.contents_text|linebreaks }}</li> <!-- linebreaks: 줄바꿈 적용 -->
             <ul>
                 <li><a href="/pollsplus/posts/{{ post.id }}/comments">댓글보기</a></li>
+                {% for comment in post.comment_set.all %}
+                    <li>{{ comment.writer }} - {{ comment.contents_text }}</li>
+                {% endfor %}
             </ul>
         </ul>
         {% endfor %}

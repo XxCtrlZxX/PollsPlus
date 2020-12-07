@@ -9,7 +9,7 @@
     <h2>{{ post.title_text }}</h2>
     <ul>
         {% for comment in post.comment_set.all %}
-            <li>{{ comment.writer }} -- {{ comment.contents_text }}</li>
+            <li>{{ comment.writer }} - {{ comment.contents_text }} ({{ comment.pub_date }})</li>
         {% endfor %}
     </ul>
     {% else %}
