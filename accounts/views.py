@@ -56,8 +56,6 @@ def signin(request):
             return render('accounts/index.html', {"userid": userid})
     return render(request, 'accounts/signin.html')
 
-    return render(request, 'accounts/signin.html')
-
 
 def signout(request):
     auth.logout(request)
