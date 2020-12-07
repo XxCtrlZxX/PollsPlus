@@ -14,10 +14,10 @@
             <li>Writer : {{ post.writer }}</li>
             <li>Text : {{ post.contents_text|linebreaks }}</li> <!-- linebreaks: 줄바꿈 적용 -->
             <ul>
-                <li><a href="/pollsplus/posts/{{ post.id }}/comments">댓글보기</a></li>
                 {% for comment in post.comment_set.all %}
                     <li>{{ comment.writer }} - {{ comment.contents_text }}</li>
                 {% endfor %}
+                <li><a href="/pollsplus/posts/{{ post.id }}/comments">자세히</a></li>
             </ul>
         </ul>
         {% endfor %}

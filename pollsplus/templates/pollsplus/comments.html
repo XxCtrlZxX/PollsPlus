@@ -6,12 +6,18 @@
 </head>
 <body>
     {% if post %}
-    <h2>{{ post.title_text }}</h2>
-    <ul>
-        {% for comment in post.comment_set.all %}
-            <li>{{ comment.writer }} - {{ comment.contents_text }} ({{ comment.pub_date }})</li>
-        {% endfor %}
-    </ul>
+        <h2>{{ post.title_text }}</h2>
+        {% if error_message %} <p><strong>{{ error_messege }}</strong></p> {% endif %}
+        <ul>
+            {% for comment in post.comment_set.all %}
+                <li>{{ comment.writer }} - {{ comment.contents_text }} ({{ comment.pub_date }})</li>
+            {% endfor %}
+        </ul>
+        <form action="{% url 'pollsplus:addcomments' post.id %}" method="post">{% csrf_token %}
+            Writer : <input type="text" name="writer" required placeholder="작성자"><br>
+            Content : <textarea name="contents" cols="40" rows="4" wrap="hard" required placeholder="내용을 입력하세요."></textarea>
+            <input type="submit" value="댓글 등록">
+        </form>
     {% else %}
         <p>Comments are not exist</p>
     {% endif %}
