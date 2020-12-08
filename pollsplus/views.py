@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Post, Comment
@@ -12,8 +12,14 @@ def index(request):
 def posts(request):
     latest_post_list = Post.objects.all().order_by('-pub_date')[:10]
     context = {'latest_posts': latest_post_list}
-    return render(request, 'pollsplus/posts.html', context)
 
+    if request.method == "POST":
+        id = request.POST["id"]
+        post = Post.objects.all().filter(id=id)
+        post.delete()
+        return redirect("pollsplus:index")
+        
+    return render(request, 'pollsplus/posts.html', context)
 
 # 댓글 자세히 보기
 def comments(request, post_id):

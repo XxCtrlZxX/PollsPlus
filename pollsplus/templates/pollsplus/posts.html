@@ -16,6 +16,13 @@
             {% if post.file %}
                 <li><img src="{{ post.file.url }}" alt="" /></li>
             {% endif %}
+            <li>
+                <form method="POST" action="{% url 'pollsplus:posts' %}">
+                    {% csrf_token %}
+                    <input type="text" name="id" style="display: none;" value="{{ post.id }}">
+                    <input type="submit" value="삭제">
+                </form>
+            </li>
             <ul>
                 {% for comment in post.comment_set.all %}
                     <li>{{ comment.writer }} - {{ comment.contents_text }}</li>
