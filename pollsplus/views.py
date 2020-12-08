@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Post, Comment
-
+from .forms import PostForm
 
 def index(request):
     return render(request, 'pollsplus/index.html')
@@ -46,14 +46,23 @@ def posting(request):
 # 작성된 게시글 업로드
 def upload(request):
     try:
-        title_text = request.POST['title']
+        title_text = request.POST['title_text']
         writer = request.POST['writer']
         contents = request.POST['contents']
+
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.title_text = title_text
+            post.writer = writer
+            post.contents = contents
+            post.save()
+        else:
+            post = Post(title_text=title_text, writer=writer, contents_text=contents)
+            post.save()
     except KeyError:
         return render(request, 'pollsplus/posting.html',
                       {'error_message': 'Upload is not successful. Please try again.'})
 
-    post = Post(title_text=title_text, writer=writer, contents_text=contents)
-    post.save()
     return HttpResponseRedirect(reverse('pollsplus:posts', args=()))
 

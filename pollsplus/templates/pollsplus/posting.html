@@ -8,10 +8,11 @@
     <h1>Posting</h1>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-    <form action="{% url 'pollsplus:upload' %}" method="post">{% csrf_token %}
-        Title    : <input type="text" name="title" required placeholder="제목"><br>
+    <form action="{% url 'pollsplus:upload' %}" method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}{{ form.as_p }}
+        Title    : <input type="text" name="title_text" required placeholder="제목"><br>
         Writer   : <input type="text" name="writer" required placeholder="작성자"><br>
-        Contents : <textarea name="contents" cols="40" rows="4" wrap="hard" required placeholder="내용을 입력하세요."></textarea>
+        Contents : <textarea name="contents" cols="40" rows="4" wrap="hard" required placeholder="내용을 입력하세요."></textarea><br>
+        Photos : <input type="file" name="file"><br>
         <input type="submit" value="등록">
     </form>
 

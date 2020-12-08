@@ -13,6 +13,9 @@
             <li>Date : {{ post.pub_date }}</li>
             <li>Writer : {{ post.writer }}</li>
             <li>Text : {{ post.contents_text|linebreaks }}</li> <!-- linebreaks: 줄바꿈 적용 -->
+            {% if post.file %}
+                <li><img src="{{ post.file.url }}" alt="" /></li>
+            {% endif %}
             <ul>
                 {% for comment in post.comment_set.all %}
                     <li>{{ comment.writer }} - {{ comment.contents_text }}</li>
