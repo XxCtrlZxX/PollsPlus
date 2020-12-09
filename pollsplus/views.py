@@ -100,4 +100,4 @@ def edit(request, post_id):
         return render(request, 'pollsplus/edit.html', {'post': post, 'username': request.user.username})
 
     else:
-        return redirect('pollsplus/posts.html')
+        return redirect('pollsplus:posts')
