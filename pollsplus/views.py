@@ -15,7 +15,7 @@ def posts(request):
     context = {'latest_posts': latest_post_list}
 
     if request.method == "POST":
-        id = request.POST["id"]
+        id = request.POST.get("id", "")
         post = Post.objects.all().filter(id=id)
         post.delete()
         return redirect("pollsplus:index")
