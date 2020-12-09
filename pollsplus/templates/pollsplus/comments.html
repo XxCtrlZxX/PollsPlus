@@ -14,8 +14,12 @@
             {% endfor %}
         </ul>
         <form action="{% url 'pollsplus:addcomments' post.id %}" method="post">{% csrf_token %}
-            Writer : <input type="text" name="writer" required placeholder="작성자"><br>
-            Content : <textarea name="contents" cols="40" rows="4" wrap="hard" required placeholder="내용을 입력하세요."></textarea>
+            {% if username %}
+                Writer : <br><input type="text" name="writer" required readonly value="{{ username }}"><br>
+            {% else %}
+                Writer : <br><input type="text" name="writer" required placeholder="작성자"><br>
+            {% endif %}
+            Content : <br><textarea name="contents" cols="40" rows="4" wrap="hard" required placeholder="내용을 입력하세요."></textarea>
             <input type="submit" value="댓글 등록">
         </form>
     {% else %}
