@@ -8,7 +8,7 @@
     <h1>Posting</h1>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-    <form action="{% url 'pollsplus:posts' %}" method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}{{ form.as_p }}
+    <form  method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}{{ form.as_p }}
         Title    : <input type="text" name="title_text" required placeholder="제목" value="{{ post.title_text }}"><br>
         {% if username %}
             Writer   : <br><input type="text" name="writer" required readonly value="{{ username }}"><br>
