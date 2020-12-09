@@ -30,11 +30,14 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/pollsplus/posts">Post</a>
+                <a class="nav-link" href="/pollsplus/posts">Posts</a>
             </li>
             {% if username %}
             <li class="nav-item">
-                <a class="nav-link" href="/pollsplus/posts">Hello, {{ username }}</a>
+                <a class="nav-link" href="/pollsplus/posting">Create Post</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/polls/accounts/signout">Logout, {{ username }}</a>
             </li>
             {% else %}
             <li class="nav-item">
@@ -45,15 +48,12 @@
             </li>
             {% endif %}
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search">
-            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-        </form>
     </div>
 </nav>
 <div class="container">
-    {% block content %}
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+    {% block content %}
     {% endblock %}
 </div>
 

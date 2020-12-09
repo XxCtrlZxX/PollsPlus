@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib import auth
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader
 from django.http import HttpResponse, Http404, HttpResponseRedirect
@@ -30,7 +31,7 @@ def signup(request):
                 user = User.objects.create_user(username=userid, password=password1, first_name=username)
                 user.save()
                 auth.login(request, user)
-                return redirect("polls:accounts:index")
+                return HttpResponseRedirect(reverse('pollsplus:index'))
             except Exception:
                 return render(request, 'accounts/signup.html', {"error": "아이디가 중복되었습니다 "})
 
@@ -53,15 +54,15 @@ def signin(request):
             return render(request, 'accounts/signin.html', {"error": "username or password is incorrect"})
         else:
             auth.login(request, user)
-            return render(request, 'accounts/index.html', {"userid": userid})
+            return HttpResponseRedirect(reverse('pollsplus:index'))
     return render(request, 'accounts/signin.html')
 
 
 def signout(request):
     auth.logout(request)
-    return render(request, "accounts/index.html")
+    return HttpResponseRedirect(reverse('pollsplus:index'))
 
 
 def index(request):
-    return render(request, 'accounts/index.html')
+    return HttpResponseRedirect(reverse('pollsplus:posts'))
 # Create your views here.

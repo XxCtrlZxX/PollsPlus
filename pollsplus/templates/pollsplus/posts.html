@@ -3,43 +3,43 @@
 {% block content %}
 <br>
 {% if latest_posts %}
-    {% for post in latest_posts %}
-    <div class="bs-component">
-        <div class="card mb-3">
-            <h3 class="card-header">Title : {{ post.title_text }}</h3>
-            <div class="card-body">
-                <h5 class="card-title">Date : {{ post.pub_date }}</h5>
-                <h6 class="card-subtitle text-muted">Writer : {{ post.writer }}</h6>
-            </div>
-            {% if post.file %}
-            <li><img src="{{ post.file.url }}" alt="" /></li>
-            {% endif %}
-            <div class="card-body">
-                <p class="card-text">Text : {{ post.contents_text|linebreaks }}</p>
-            </div>
-            <ul class="list-group list-group-flush">
-                {% for comment in post.comment_set.all %}
-                <li class="list-group-item">{{ comment.writer }} - {{ comment.contents_text }}</li>
-                {% endfor %}
-            </ul>
+{% for post in latest_posts %}
+<div class="bs-component">
+    <div class="card mb-3">
+        <h3 class="card-header">{{ post.title_text }}</h3>
+        <div class="card-body">
+            <h5 class="card-title">Date : {{ post.pub_date }}</h5>
+            <h6 class="card-subtitle text-muted">Writer : {{ post.writer }}</h6>
+        </div>
+        {% if post.file %}
+        <img src="{{ post.file.url }}" object-fit="scale-down" alt=""/>
+        {% endif %}
+        <div class="card-body">
+            <p class="card-text">{{ post.contents_text|linebreaks }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for comment in post.comment_set.all %}
+            <li class="list-group-item">{{ comment.writer }} - {{ comment.contents_text }}</li>
+            {% endfor %}
+        </ul>
 
-            {% if username == post.writer %}
-            <ul>
-                <form method="POST" action="{% url 'pollsplus:posts' %}">
-                    {% csrf_token %}
-                    <input type="text" name="id" style="display: none;" value="{{ post.id }}">
-                    <input class="btn btn-primary btn-lg" type="submit" value="삭제">
-                    <a class="btn btn-primary btn-lg" href="/pollsplus/edit/{{ post.id }}" role="button">수정하기</a>
-                </form>
-            </ul>
-            {% endif %}
+        {% if username == post.writer %}
+        <ul>
+            <form method="POST" action="{% url 'pollsplus:posts' %}">
+                {% csrf_token %}
+                <input type="text" name="id" style="display: none;" value="{{ post.id }}">
+                <input class="btn btn-primary btn-lg" type="submit" value="삭제">
+                <a class="btn btn-primary btn-lg" href="/pollsplus/edit/{{ post.id }}" role="button">수정하기</a>
+            </form>
+        </ul>
+        {% endif %}
 
-            <div class="card-body">
-                <a href="/pollsplus/posts/{{ post.id }}/comments" class="card-link">댓글달기</a>
-            </div>
+        <div class="card-body">
+            <a href="/pollsplus/posts/{{ post.id }}/comments" class="card-link">댓글달기</a>
         </div>
     </div>
-    {% endfor %}
+</div>
+{% endfor %}
 {% else %}
 <p>Posts are not exist</p>
 {% endif %}

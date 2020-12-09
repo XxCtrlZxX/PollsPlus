@@ -1,0 +1,28 @@
+{% extends 'pollsplus/base.html' %}
+
+{% block content %}
+<br>
+<h1>Sign Up</h1>
+
+<form method="POST" action="{% url 'polls:accounts:signup' %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label class="col-form-label" for="inputID">UserID</label>
+        <input type="text" class="form-control" placeholder="user id" id="inputID" name="userid">
+    </div>
+    <div class="form-group">
+        <label class="col-form-label" for="inputName">Username</label>
+        <input type="text" class="form-control" placeholder="username" id="inputName" name="username">
+    </div>
+    <div class="form-group">
+        <label class="col-form-label" for="inputPW1">Password</label>
+        <input type="password" class="form-control" placeholder="password" id="inputPW1" name="password1">
+    </div>
+    <div class="form-group">
+        <label class="col-form-label" for="inputPW2">Confirm Password</label>
+        <input type="password" class="form-control" placeholder="confirm password" id="inputPW2" name="password2">
+    </div>
+    <br>
+    <input type="submit" class="btn btn-primary" value="Sign In">
+</form>
+{% endblock %}

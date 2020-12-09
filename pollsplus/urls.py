@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -9,6 +9,7 @@ urlpatterns = [
     path('posts/<int:post_id>/comments/add/', views.addComment, name='addcomments'),
     path('posting/', views.posting, name='posting'),
     path('posting/upload/', views.upload, name='upload'),
+    path('accounts/', include('accounts.urls',  namespace='accounts'))
 ]
 
 app_name = 'pollsplus'

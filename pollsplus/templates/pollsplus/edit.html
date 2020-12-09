@@ -1,24 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Posting</title>
-</head>
-<body>
-    <h1>Posting</h1>
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% extends 'pollsplus/base.html' %}
 
-    <form  method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}{{ form.as_p }}
-        Title    : <input type="text" name="title_text" required placeholder="제목" value="{{ post.title_text }}"><br>
-        {% if username %}
-            Writer   : <br><input type="text" name="writer" required readonly value="{{ username }}"><br>
-        {% else %}
-            Writer   : <br><input type="text" name="writer" required placeholder="작성자"><br>
-        {% endif %}
-        Contents : <textarea name="contents" cols="40" rows="4" wrap="hard" required placeholder="내용을 입력하세요." value="{{ post.contents_text }}"></textarea><br>
-        Photos : <input type="file" name="file"><br>
-        <input type="submit" value="수정">
-    </form>
+{% block content %}
+<br>
+<h1>Edit Post</h1>
 
-</body>
-</html>
+<form  method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}{{ form.as_p }}
+    <div class="form-group">
+        <label class="col-form-label" for="inputTitle">Title</label>
+        <input type="text" class="form-control" placeholder="Default input" id="inputTitle" name="title_text" required placeholder="제목" value="{{ post.title_text }}">
+    </div>
+    {% if username %}
+    <div class="form-group">
+        <label class="col-form-label" for="inputDefault">Writer</label>
+        <input type="text" class="form-control" placeholder="Default input" id="inputDefault" name="writer" required readonly value="{{ username }}">
+    </div>
+    {% else %}
+    <div class="form-group">
+        <label class="col-form-label" for="inputDefault">Writer</label>
+        <input type="text" class="form-control" placeholder="Default input" id="inputDefault" name="writer" required placeholder="작성자">
+    </div>
+    {% endif %}
+    <div class="form-group">
+        <label class="col-form-label" for="inputContent">Content</label>
+        <textarea class="form-control" id="inputContent" rows="3" name="contents"></textarea>
+    </div>
+
+    Photos : <input type="file" name="file"><br>
+    <br>
+    <input type="submit" class="btn btn-primary" value="submit">
+</form>
+{% endblock %}

@@ -93,8 +93,7 @@ def edit(request, post_id):
         post.writer = request.POST.get("writer", "")
         post.contents_text = request.POST.get("contents", "")
         post.save()
-        return render(request, 'pollsplus/posting.html',
-                      {'error_message': '수정이 완료되었습니다.', 'post': post})
+        return HttpResponseRedirect(reverse('pollsplus:posts'))
 
     if request.user.is_authenticated:
         return render(request, 'pollsplus/edit.html', {'post': post, 'username': request.user.username})
