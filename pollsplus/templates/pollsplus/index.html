@@ -2,9 +2,15 @@
 
 {% block content %}
 
-<div>
-    <a href="/pollsplus/posts">포스트</a><br>
-    <a href="/pollsplus/posting">게시물 작성</a>
+<div class="col-lg-12">
+    <div class="jumbotron">
+        <h1 class="display-3">Simple Cafe!</h1>
+        <p class="lead"> 간단하게 자신의 글과 사진을 공유하세요! </p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="/polls/accounts/signup" role="button">회원가입</a>
+            <a class="btn btn-primary btn-lg" href="/pollsplus/posts" role="button">포스트</a>
+        </p>
+    </div>
 </div>
 
 {% endblock %}

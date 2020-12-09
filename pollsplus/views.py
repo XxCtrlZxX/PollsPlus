@@ -6,20 +6,26 @@ from .forms import PostForm
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return render(request, 'pollsplus/index.html', {'username': request.user.username})
     return render(request, 'pollsplus/index.html')
 
 
 # 게시글 보기
 def posts(request):
     latest_post_list = Post.objects.all().order_by('-pub_date')[:10]
-    context = {'latest_posts': latest_post_list}
+    username = ""
+
+    if request.user.is_authenticated:
+        username = request.user.username;
 
     if request.method == "POST":
         id = request.POST.get("id", "")
         post = Post.objects.all().filter(id=id)
         post.delete()
-        return redirect("pollsplus:index")
-        
+        return redirect("pollsplus:posts")
+
+    context = {'latest_posts': latest_post_list, 'username': username}
     return render(request, 'pollsplus/posts.html', context)
 
 
@@ -45,14 +51,14 @@ def addComment(request, post_id):
     comment = Comment(writer=writer, contents_text=contents)
     comment.post = post
     comment.save()
-    return HttpResponseRedirect(reverse('pollsplus:comments', args=(post.id, )))
+    return  HttpResponseRedirect(reverse('pollsplus:comments', args=(post.id, )))
 
 
 # 게시글 작성창
 def posting(request):
     if request.user.is_authenticated:
         return render(request, 'pollsplus/posting.html', {'username': request.user.username})
-    return render(request, 'pollsplus/posting.html')
+    return render(request, 'pollsplus:posts')
 
 
 # 작성된 게시글 업로드
@@ -90,4 +96,8 @@ def edit(request, post_id):
         return render(request, 'pollsplus/posting.html',
                       {'error_message': '수정이 완료되었습니다.'})
 
-    return render(request, 'pollsplus/edit.html', {'post': post})
+    if request.user.is_authenticated:
+        return render(request, 'pollsplus/edit.html', {'post': post, 'username': request.user.username})
+
+    else:
+        redirect('pollsplus/posts.html')

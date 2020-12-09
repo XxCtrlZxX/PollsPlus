@@ -1,29 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Comments</title>
-</head>
-<body>
-    {% if post %}
-        <h2>{{ post.title_text }}</h2>
-        {% if error_message %} <p><strong>{{ error_messege }}</strong></p> {% endif %}
-        <ul>
-            {% for comment in post.comment_set.all %}
-                <li>{{ comment.writer }} - {{ comment.contents_text }} ({{ comment.pub_date }})</li>
-            {% endfor %}
-        </ul>
-        <form action="{% url 'pollsplus:addcomments' post.id %}" method="post">{% csrf_token %}
-            {% if username %}
-                Writer : <br><input type="text" name="writer" required readonly value="{{ username }}"><br>
-            {% else %}
-                Writer : <br><input type="text" name="writer" required placeholder="작성자"><br>
-            {% endif %}
-            Content : <br><textarea name="contents" cols="40" rows="4" wrap="hard" required placeholder="내용을 입력하세요."></textarea>
-            <input type="submit" value="댓글 등록">
-        </form>
+{% extends 'pollsplus/base.html' %}
+
+{% block content %}
+
+{% if post %}
+<h2>{{ post.title_text }}</h2>
+{% if error_message %} <p><strong>{{ error_messege }}</strong></p> {% endif %}
+<ul class="list-group list-group-flush">
+    {% for comment in post.comment_set.all %}
+    <li class="list-group-item">{{ comment.writer }} - {{ comment.contents_text }} ({{ comment.pub_date }})</li>
+    {% endfor %}
+</ul>
+<form action="{% url 'pollsplus:addcomments' post.id %}" method="post">{% csrf_token %}
+    {% if username %}
+    <div class="form-group">
+        <label class="col-form-label" for="inputDefault">Writer</label>
+        <input type="text" class="form-control" placeholder="Default input" id="inputDefault" name="writer" required readonly value="{{ username }}">
+    </div>
     {% else %}
-        <p>Comments are not exist</p>
+    <div class="form-group">
+        <label class="col-form-label" for="inputDefault">Writer</label>
+        <input type="text" class="form-control" placeholder="Default input" id="inputDefault" name="writer" required placeholder="작성자">
+    </div>
     {% endif %}
-</body>
-</html>
+    <label class="col-form-label" for="inputContent">Content</label>
+    <textarea class="form-control" id="inputContent" rows="3"></textarea>
+    <br>
+    <input type="submit" class="btn btn-primary" value="댓글 등록">
+</form>
+{% else %}
+<p>Comments are not exist</p>
+{% endif %}
+{% endblock %}
