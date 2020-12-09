@@ -1,24 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Posting</title>
-</head>
-<body>
-    <h1>Posting</h1>
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% extends 'pollsplus/base.html' %}
 
-    <form action="{% url 'pollsplus:upload' %}" method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}{{ form.as_p }}
-        Title    : <br><input type="text" name="title_text" required placeholder="제목"><br>
-        {% if username %}
-            Writer   : <br><input type="text" name="writer" required readonly value="{{ username }}"><br>
-        {% else %}
-            Writer   : <br><input type="text" name="writer" required placeholder="작성자"><br>
-        {% endif %}
-        Contents : <br><textarea name="contents" cols="40" rows="4" wrap="hard" required placeholder="내용을 입력하세요."></textarea><br>
-        Photos : <br><input type="file" name="file"><br>
-        <input type="submit" value="등록">
-    </form>
+{% block content %}
 
-</body>
-</html>
+<form action="{% url 'pollsplus:upload' %}" method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}{{ form.as_p }}
+    <div class="form-group">
+        <label class="col-form-label" for="inputTitle">Title</label>
+        <input type="text" class="form-control" placeholder="Default input" id="inputTitle" name="title_text" required placeholder="제목">
+    </div>
+    {% if username %}
+    <div class="form-group">
+        <label class="col-form-label" for="inputDefault">Writer</label>
+        <input type="text" class="form-control" placeholder="Default input" id="inputDefault" name="writer" required readonly value="{{ username }}">
+    </div>
+    {% else %}
+    <div class="form-group">
+        <label class="col-form-label" for="inputDefault">Writer</label>
+        <input type="text" class="form-control" placeholder="Default input" id="inputDefault" name="writer" required placeholder="작성자">
+    </div>
+    {% endif %}
+    <label class="col-form-label" for="inputContent">Content</label>
+    <textarea class="form-control" id="inputContent" name="contents" rows="3" required placeholder="내용을 입력하세요."></textarea>
+    Photos : <br><input type="file" name="file"><br> <br>
+    <input class="btn btn-primary" type="submit" value="등록">
+</form>
+
+{% endblock %}
