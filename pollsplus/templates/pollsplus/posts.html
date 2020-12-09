@@ -1,38 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Posts</title>
-</head>
-<body>
-    {% if latest_posts %}
-    <h1>Posts</h1>
-        {% for post in latest_posts %}
-        <ul>
-            <li>Title : {{ post.title_text }}</li>
-            <li>Date : {{ post.pub_date }}</li>
-            <li>Writer : {{ post.writer }}</li>
-            <li>Text : {{ post.contents_text|linebreaks }}</li> <!-- linebreaks: 줄바꿈 적용 -->
+{% extends 'pollsplus/base.html' %}
+
+{% block content %}
+
+{% if latest_posts %}
+    {% for post in latest_posts %}
+    <div class="bs-component">
+        <div class="card mb-3">
+            <h3 class="card-header">Title : {{ post.title_text }}</h3>
+            <div class="card-body">
+                <h5 class="card-title">Date : {{ post.pub_date }}</h5>
+                <h6 class="card-subtitle text-muted">Writer : {{ post.writer }}</h6>
+            </div>
             {% if post.file %}
-                <li><img src="{{ post.file.url }}" alt="" /></li>
+            <li><img src="{{ post.file.url }}" alt="" /></li>
             {% endif %}
-            <li>
+            <div class="card-body">
+                <p class="card-text">Text : {{ post.contents_text|linebreaks }}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for comment in post.comment_set.all %}
+                <li class="list-group-item">{{ comment.writer }} - {{ comment.contents_text }}</li>
+                {% endfor %}
+            </ul>
+
+            {% if username == post.writer %}
+            <ul>
                 <form method="POST" action="{% url 'pollsplus:posts' %}">
                     {% csrf_token %}
                     <input type="text" name="id" style="display: none;" value="{{ post.id }}">
-                    <input type="submit" value="삭제">
+                    <input class="btn btn-primary btn-lg" type="submit" value="삭제">
+                    <a class="btn btn-primary btn-lg" href="/pollsplus/edit/{{ post.id }}" role="button">수정하기</a>
                 </form>
-            </li>
-            <ul>
-                {% for comment in post.comment_set.all %}
-                    <li>{{ comment.writer }} - {{ comment.contents_text }}</li>
-                {% endfor %}
-                <li><a href="/pollsplus/posts/{{ post.id }}/comments">댓글달기</a></li>
             </ul>
-        </ul>
-        {% endfor %}
-    {% else %}
-        <p>Posts are not exist</p>
-    {% endif %}
-</body>
-</html>
+            {% endif %}
+
+            <div class="card-body">
+                <a href="/pollsplus/posts/{{ post.id }}/comments" class="card-link">댓글달기</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+<p>Posts are not exist</p>
+{% endif %}
+
+{% endblock %}
