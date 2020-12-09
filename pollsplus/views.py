@@ -17,7 +17,7 @@ def posts(request):
     username = ""
 
     if request.user.is_authenticated:
-        username = request.user.username;
+        username = request.user.username
 
     if request.method == "POST":
         id = request.POST.get("id", "")
