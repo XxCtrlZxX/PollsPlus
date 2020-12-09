@@ -73,11 +73,11 @@ def upload(request):
     return HttpResponseRedirect(reverse('pollsplus:posts', args=()))
 
 def edit(request, post_id):
-    post = Post.objects.filter(id=post_id)
+    post = Post.objects.get(id=post_id)
 
     if request.method == "POST":
         post.title_text = request.POST.get("title_text", "")
-        post.writer_text = request.POST.get("writer", "")
+        post.writer = request.POST.get("writer", "")
         post.contents_text = request.POST.get("contents", "")
         post.update()
         return render(request, 'pollsplus/posting.html',
