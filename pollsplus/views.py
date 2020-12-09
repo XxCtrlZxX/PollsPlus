@@ -4,6 +4,7 @@ from django.urls import reverse
 from .models import Post, Comment
 from .forms import PostForm
 
+
 def index(request):
     return render(request, 'pollsplus/index.html')
 
@@ -21,9 +22,12 @@ def posts(request):
         
     return render(request, 'pollsplus/posts.html', context)
 
-# 댓글 자세히 보기
+
+# 댓글 달기
 def comments(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
+    if request.user.is_authenticated:
+        return render(request, 'pollsplus/comments.html', {'post': post, 'username': request.user.username})
     return render(request, 'pollsplus/comments.html', {'post': post})
 
 
@@ -46,6 +50,8 @@ def addComment(request, post_id):
 
 # 게시글 작성창
 def posting(request):
+    if request.user.is_authenticated:
+        return render(request, 'pollsplus/posting.html', {'username': request.user.username})
     return render(request, 'pollsplus/posting.html')
 
 
@@ -53,8 +59,8 @@ def posting(request):
 def upload(request):
     try:
         title_text = request.POST['title_text']
-        writer = request.POST['writer']
         contents = request.POST['contents']
+        writer = request.POST['writer']
 
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -71,6 +77,7 @@ def upload(request):
                       {'error_message': 'Upload is not successful. Please try again.'})
 
     return HttpResponseRedirect(reverse('pollsplus:posts', args=()))
+
 
 def edit(request, post_id):
     post = Post.objects.filter(id=post_id)
