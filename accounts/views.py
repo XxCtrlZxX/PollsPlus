@@ -53,7 +53,7 @@ def signin(request):
             return render(request, 'accounts/signin.html', {"error": "username or password is incorrect"})
         else:
             auth.login(request, user)
-            return render('accounts/index.html', {"userid": userid})
+            return render(request, 'accounts/index.html', {"userid": userid})
     return render(request, 'accounts/signin.html')
 
 
